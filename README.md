@@ -1,3 +1,56 @@
-# analisis-palabras
+# Diccionario de palabras
 
--f <archivo a utilizaar como diccionario> -a <archivo a analizar>
+Inicialización:  
+> dic = Diccionario.new
+
+para agregar nuevas palabras al diccionario:  
+> relacion = []
+> dic.agregar('palabra', relacion)
+
+para buscar si una palabra se encuentra incluida en el diccionario:  
+> dic.buscar('palabra')
+
+tam_contexto es la cantidad de palabras que serán tomadas para el contexto de una palabra.  
+para el caso de querer verificar la aparición de las palabras incluidas en el diccionario:  
+~~~
+texto = 'esto es un texto, y se va a verificar en el diccionario'
+dic.agregar('texto', ['escrito'])
+dic.agregar('diccionario', ['definicion de palabras', 'recopilacion palabras'])
+tam_contexto = 5
+dic.verificar_texto(texto, tam_contexto )
+~~~
+
+Esto retornará el siguiente hash (organizado para entenderlo mejor):  
+~~~~
+[
+    {
+        :palabra=>"texto", 
+        :contexto=>{
+            :pre=>["esto", "es", "un"], 
+            :pos=>["y", "se", "va", "a", "verificar"]
+        }, 
+        :relaciones=>[
+            ["escrito"]
+        ]
+    }, 
+    {
+        :palabra=>"diccionario", 
+        :contexto=>{
+            :pre=>["va", "a", "verificar", "en", "el"], 
+            :pos=>[]
+        }, 
+        :relaciones=>[
+            ["definicion de palabras", "recopilacion palabras"]
+        ]
+    }
+]
+~~~~
+
+También se tiene la funcion `verificar` la cual sirve para verificar una lista de textos  
+retorna un hash de la forma 
+~~~~
+{
+    :relato : siendo el texto analizado
+    :posibilidades : el mismo hash resultante de verificar_texto 
+}
+~~~~
