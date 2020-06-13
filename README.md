@@ -1,2 +1,3 @@
-# diccionario-palabras
-gema de ruby que recibiendo una lista de palabras y sus relaciones, permitehacer una busqueda de estas dentro de un texto
+# analisis-palabras
+
+-f <archivo a utilizaar como diccionario> -a <archivo a analizar>

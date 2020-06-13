@@ -1,0 +1,6 @@
+**/datos
+**/.byebug_history
+**/*.json
+**/*.csv
+*.gem
+.byebug_history
