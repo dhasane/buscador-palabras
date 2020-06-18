@@ -66,42 +66,34 @@ class Diccionario
     resultado
   end
 
-  # separa el texto por '.' y los envia a verificar_frase
-  # retorna una lista de posibilidades
   def verificar_texto(relato, tam_contexto)
-    resultado = Set.new
-    relato.gsub(',', '').split('.').each do |parr|
-      resultado += verificar_frase(parr, tam_contexto)
+    resultado = {}
+    relato.gsub(',', '').split('.').each do |contexto|
+      next if contexto.nil?
+
+      palabras = contexto.split(' ')
+      palabras.each_index do |i|
+        respuesta = @trie.buscar_contexto(palabras, i, 0, '')
+        next if respuesta.empty?
+
+        palabra = respuesta[:pal].to_s
+        contexto = ver_contexto(tam_contexto, palabras, respuesta[:pal].to_s, i)
+        if resultado[palabra].nil?
+          resultado[palabra] = {
+            palabra: palabra,
+            contexto: [contexto],
+            relaciones: respuesta[:rel].to_set
+          }
+        else
+          resultado[palabra][:contexto] += [contexto]
+          resultado[palabra][:relaciones] += respuesta[:rel].to_set
+        end
+      end
     end
     resultado.to_a
   end
 
   private
-
-  # cada texto probarlo en cada uno de los arboles
-  # para esto se recorre el relato como una lista de palabras, en la que
-  # cada palabra es verificada en cada uno de los arboles.
-  # En caso de ser encontrada en el arbol, se agrega la informacion
-  # conseguida a la lista "resultado". Esta lista es retornada
-  # retorna un Set
-  def verificar_frase(contexto, tam_contexto)
-    return if contexto.nil?
-
-    resultado = Set.new
-    palabras = contexto.split(' ')
-    palabras.each_index do |i|
-      respuesta = @trie.buscar_contexto(palabras, i, 0, '')
-      next if respuesta.empty?
-
-      # resultado << {
-      resultado.add(
-        palabra: respuesta[:pal].to_s,
-        contexto: ver_contexto(tam_contexto, palabras, respuesta[:pal].to_s, i),
-        relaciones: respuesta[:rel]
-      )
-    end
-    resultado
-  end
 
   # siendo contexto, una lista de palabras, frase lo que se tendra en cuenta y
   # entorno la cantidad de palabras alrededor de frase
