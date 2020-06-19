@@ -8,14 +8,13 @@ class Diccionario
     @trie = ArbolTrie.new
   end
 
-  # se ingesa una palabra al arbol
+  # se ingresa una palabra al arbol
   def agregar(palabra, relacion)
     return if palabra.nil?
 
     @trie.agregar(palabra, relacion)
   end
 
-  # reconstruye las palabras que se encuentran dentro de todos los arboles
   # con fines de poder comprobar que se haya guardado correctamente
   def reconstruir_palabras
     palabras = []
@@ -41,32 +40,20 @@ class Diccionario
     @trie.prt(0)
   end
 
-  # siendo texto una lista de cadenas de texto, se verifica cada una de estas.
-  # con relacion a cada uno de los arboles que se hayan construido
-  # al final se retorna una lista de hashes, donde cada hash contiene:
-  # texto => texto original
-  # posibilidades => lista hashes {
-  #   tipo => nombre del arbol en el que fue encontrada la palabra
-  #   palabra => la palabra encontrada en uno de los arboles
-  #   contexto => las palabras que rodean la palabra buscada
-  #   relaciones => relaciones encontradas en el arbol
+  # Busca todas las palabras de un texto en un trie y retorna las ocurrencias y los significados de cada palabra encontrada.
+  # parametros
+  # resultado
+  # mapa donde cada registro palabra => contenido
+  # siendo contenido
+  #   {contexto => c, relaciones => r}
+  #   donde c es una lista con tantos elementos como ocurrencias haya de palabra en texto.
+  #   Cada elemento (correspondiente a una ocurrencia) es un mapa de la forma {pre=> a , pos=> d}
+  #   donde a son máximo 'tam_contexto' palabras anteriores
+  #   a la ocurrencia de la palabra en texto y d son máximo 'tam_contexto' palaras después de la ocurrencia.
+  #   r es el conjunto de relaciones de la palabra en el trie.
+  #   relaciones => palabras relacionadas a la palabra encontrada en el trie
   # }
-  def verificar(texto, tam_contexto)
-    return if texto.nil?
-
-    resultado = []
-    texto.each do |relato|
-      next if relato.nil?
-
-      resultado << {
-        texto: relato,
-        posibilidades: verificar_texto(relato, tam_contexto)
-      }
-    end
-    resultado
-  end
-
-  def verificar_texto(relato, tam_contexto)
+  def analizar(relato, tam_contexto)
     resultado = {}
     relato.gsub(',', '').split('.').each do |contexto|
       next if contexto.nil?
@@ -82,15 +69,14 @@ class Diccionario
           resultado[palabra] = {
             palabra: palabra,
             contexto: [contexto],
-            relaciones: respuesta[:rel].to_set
+            relaciones: respuesta[:rel]
           }
         else
           resultado[palabra][:contexto] += [contexto]
-          resultado[palabra][:relaciones] += respuesta[:rel].to_set
         end
       end
     end
-    resultado.to_a
+    resultado
   end
 
   private
