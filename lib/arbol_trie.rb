@@ -7,27 +7,29 @@ require 'set'
 
 # arbolito de palabras ~
 class ArbolTrie
+  # Definicion:
+  # Un nodo es hoja de un arbol si y solo si
+  #   @hijos == {}
+  #
+  # Representacion:
+  # Cuando @hijos no es vacio, cada llave corresponde al primer caracter
+  #   de una cadena representada y su valor al resto de la cadena
+  #
+  # Un nodo es final de una cadena representada en el trie si y solo si
+  #     @relacion no es vacia (i.e !@relacion.empty? )
+  #
+  # Excepto en el trie vacio, las hojas deben tener @relacion no vacia
   def initialize
     @hijos = {}
     @relacion = Set.new
-    # Definición:
-    # Un nodo es hoja de un árbol si y solo si 
-    #   @hijos == {}
-    #
-    # Representación:
-    # Cuando @hijos no es vacío, cada llave corresponde al primer caracter
-    #   de una cadena representada y su valor al resto de la cadena
-    #
-    # Un nodo es final de una cadena representada en el trie si y solo si
-    #     @relacion no es vacia (i.e !@relacion.empty? )
-    #
-    # Excepto en el trie vacío, las hojas deben tener @relación no vacía
   end
 
+  # retorna el mapa de hijos
   def hijos
     @hijos
   end
 
+  # retorna el set de relaciones
   def relacion
     @relacion
   end

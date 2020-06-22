@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>README - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#label-Diccionario+de+palabras">Diccionario de palabras</a>
+    <li><a href="#label-Inicializaci-C3-B3n-3A">Inicialización:</a>
+    <li><a href="#label-Agregar+nuevas+palabras-3A">Agregar nuevas palabras:</a>
+    <li><a href="#label-Buscar+una+palabra-3A">Buscar una palabra:</a>
+    <li><a href="#label-Verificar+un+texto-3A">Verificar un texto:</a>
+    <li><a href="#label-Verificar+varios+textos-3A">Verificar varios textos:</a>
+  </ul>
+</div>
+
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./LICENSE.html">LICENSE</a>
+  
+    <li><a href="./README_md.html">README</a>
+  
+    <li><a href="./Rakefile.html">Rakefile</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page README.md">
+
+<h1 id="label-Diccionario+de+palabras"><a href="Diccionario.html"><code>Diccionario</code></a> de palabras<span><a href="#label-Diccionario+de+palabras">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<h2 id="label-Inicializaci-C3-B3n-3A">Inicialización:<span><a href="#label-Inicializaci-C3-B3n-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<blockquote>
+<p>dic = <a href="Diccionario.html#method-c-new"><code>Diccionario.new</code></a></p>
+</blockquote>
+
+<h2 id="label-Agregar+nuevas+palabras-3A">Agregar nuevas palabras:<span><a href="#label-Agregar+nuevas+palabras-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<blockquote>
+<p>relacion = [] dic.agregar(&#39;palabra&#39;, relacion)</p>
+</blockquote>
+
+<h2 id="label-Buscar+una+palabra-3A">Buscar una palabra:<span><a href="#label-Buscar+una+palabra-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<blockquote>
+<p>dic.buscar(&#39;palabra&#39;)</p>
+</blockquote>
+
+<h2 id="label-Verificar+un+texto-3A">Verificar un texto:<span><a href="#label-Verificar+un+texto-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>tam_contexto es la cantidad de palabras que serán tomadas para el contexto de una palabra.<br> para el caso de querer verificar la aparición de las palabras incluidas en el diccionario:<br> &lt;s&gt;~ texto = &#39;esto es un texto, y se va a verificar en el diccionario&#39; dic.agregar(&#39;texto&#39;, [&#39;escrito&#39;]) dic.agregar(&#39;diccionario&#39;, [&#39;definicion de palabras&#39;, &#39;recopilacion palabras&#39;]) tam_contexto = 5 dic.verificar_texto(texto, tam_contexto ) &lt;/s&gt;~</p>
+
+<p>Esto retornará el siguiente hash (organizado para entenderlo mejor):<br> ~&lt;s&gt;~ [ { :palabra=&gt;“texto”, :contexto=&gt;{ :pre=&gt;[“esto”, “es”, “un”], :pos=&gt;[“y”, “se”, “va”, “a”, “verificar”] }, :relaciones=&gt;[ [“escrito”] ] }, { :palabra=&gt;“diccionario”, :contexto=&gt;{ :pre=&gt;[“va”, “a”, “verificar”, “en”, “el”], :pos=&gt;[] }, :relaciones=&gt;[ [“definicion de palabras”, “recopilacion palabras”] ] } ] &lt;/s&gt;~~</p>
+
+<h2 id="label-Verificar+varios+textos-3A">Verificar varios textos:<span><a href="#label-Verificar+varios+textos-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>También se tiene la funcion <code>verificar</code> la cual sirve para verificar una lista de textos<br> retorna una lista de hashes de la forma ~&lt;s&gt;~ [ { :relato : siendo el texto analizado :posibilidades : el mismo hash resultante de verificar_texto }, { … }, . . . ] &lt;/s&gt;~~</p>
+
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

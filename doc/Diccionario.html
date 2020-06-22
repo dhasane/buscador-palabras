@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class Diccionario - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Object
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-agregar">#agregar</a>
+    
+    <li ><a href="#method-i-analizar">#analizar</a>
+    
+    <li ><a href="#method-i-buscar">#buscar</a>
+    
+    <li ><a href="#method-i-prt">#prt</a>
+    
+    <li ><a href="#method-i-reconstruir_palabras">#reconstruir_palabras</a>
+    
+    <li ><a href="#method-i-trie">#trie</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Diccionario">
+  <h1 id="class-Diccionario" class="class">
+    class Diccionario
+  </h1>
+
+  <section class="description">
+    
+<p><a href="Diccionario.html"><code>Diccionario</code></a> para la busqueda de palabras y su contexto. para la busqueda de palabras se utiliza un trie, dado que este permite un rapido funcionamiento a la hora de buscar dentro de este. Esta clase se utiliza para el control de varias tareas externas al trie, como lo es la busqueda del contexto y en relacion al analisis de un texto.</p>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>se inicializa el trie</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
+  <span class="ruby-ivar">@trie</span> = <span class="ruby-constant">ArbolTrie</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-agregar" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">agregar</span><span
+            class="method-args">(palabra, relacion)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>se ingresa una palabra al diccionario Parametros el primer parametro es la palabra y el segundo parametro es una lista de palabras relacionadas a la primera un ejemplo de esto podria ser : (&#39;escarabajo&#39;, [&#39;carro&#39;,&#39;volkswagen&#39;])</p>
+          
+          
+
+          
+          <div class="method-source-code" id="agregar-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">agregar</span>(<span class="ruby-identifier">palabra</span>, <span class="ruby-identifier">relacion</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">palabra</span>.<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-ivar">@trie</span>.<span class="ruby-identifier">agregar</span>(<span class="ruby-identifier">palabra</span>, <span class="ruby-identifier">relacion</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-analizar" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">analizar</span><span
+            class="method-args">(texto, tam_contexto)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Busca todas las palabras de un texto en el trie, retorna las ocurrencias y las relaciones de cada palabra encontrada. Parametros: analizar acepta dos parametros de entrada, siendo el primero el texto a analizar y el segundo la cantidad de palabras alrededor de cada una de las ocurrencias a tener en cuenta para el contexto Retorno: retorna un mapa donde la llave es la palabra encontrada y el contenido es:</p>
+
+<pre>{contexto =&gt; c, relaciones =&gt; r}
+donde c es una lista con tantos elementos como ocurrencias haya de palabra en texto.
+Cada elemento (correspondiente a una ocurrencia) es un mapa de la forma {pre=&gt; a , pos=&gt; d}
+donde a son maximo &#39;tam_contexto&#39; palabras anteriores
+a la ocurrencia de la palabra en texto y d son maximo &#39;tam_contexto&#39; palaras despues de la ocurrencia.
+r es el conjunto de relaciones de la palabra en el trie.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="analizar-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">analizar</span>(<span class="ruby-identifier">texto</span>, <span class="ruby-identifier">tam_contexto</span>)
+  <span class="ruby-identifier">resultado</span> = {}
+  <span class="ruby-identifier">texto</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;,&#39;</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;.&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">contexto</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">contexto</span>.<span class="ruby-identifier">nil?</span>
+
+    <span class="ruby-identifier">palabras</span> = <span class="ruby-identifier">contexto</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39; &#39;</span>)
+    <span class="ruby-identifier">palabras</span>.<span class="ruby-identifier">each_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">respuesta</span> = <span class="ruby-ivar">@trie</span>.<span class="ruby-identifier">buscar_contexto</span>(<span class="ruby-identifier">palabras</span>, <span class="ruby-identifier">i</span>, <span class="ruby-value">0</span>, <span class="ruby-string">&#39;&#39;</span>)
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">respuesta</span>.<span class="ruby-identifier">empty?</span>
+
+      <span class="ruby-identifier">palabra</span> = <span class="ruby-identifier">respuesta</span>[<span class="ruby-value">:pal</span>].<span class="ruby-identifier">to_s</span>
+      <span class="ruby-identifier">contexto</span> = <span class="ruby-identifier">ver_contexto</span>(<span class="ruby-identifier">tam_contexto</span>, <span class="ruby-identifier">palabras</span>, <span class="ruby-identifier">respuesta</span>[<span class="ruby-value">:pal</span>].<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">i</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">resultado</span>[<span class="ruby-identifier">palabra</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">resultado</span>[<span class="ruby-identifier">palabra</span>] = {
+          <span class="ruby-value">palabra:</span> <span class="ruby-identifier">palabra</span>,
+          <span class="ruby-value">contexto:</span> [<span class="ruby-identifier">contexto</span>],
+          <span class="ruby-value">relaciones:</span> <span class="ruby-identifier">respuesta</span>[<span class="ruby-value">:rel</span>]
+        }
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">resultado</span>[<span class="ruby-identifier">palabra</span>][<span class="ruby-value">:contexto</span>] <span class="ruby-operator">+=</span> [<span class="ruby-identifier">contexto</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">resultado</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-buscar" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">buscar</span><span
+            class="method-args">(palabra)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>busca una palabra, Parametros recibe como parametro la palabra que se va a buscar Retorno: true en caso de encontrar la palabra, false de lo contrario</p>
+          
+          
+
+          
+          <div class="method-source-code" id="buscar-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">buscar</span>(<span class="ruby-identifier">palabra</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">palabra</span>.<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-ivar">@trie</span>.<span class="ruby-identifier">buscar</span>(<span class="ruby-identifier">palabra</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-prt" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">prt</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>imprime los nodos del arbol</p>
+          
+          
+
+          
+          <div class="method-source-code" id="prt-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prt</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;letras entre || representan el final de una palabra&#39;</span>
+  <span class="ruby-ivar">@trie</span>.<span class="ruby-identifier">prt</span>(<span class="ruby-value">0</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-reconstruir_palabras" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reconstruir_palabras</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>reconstruye las palabras a partir de las palabras guardadas en el trie Retorno: lista de cadenas</p>
+          
+          
+
+          
+          <div class="method-source-code" id="reconstruir_palabras-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">reconstruir_palabras</span>
+  <span class="ruby-identifier">palabras</span> = []
+  <span class="ruby-ivar">@trie</span>.<span class="ruby-identifier">reconstruir_palabras_nodo</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">palabras</span>)
+  <span class="ruby-identifier">palabras</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-trie" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">trie</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>retorna el trie</p>
+          
+          
+
+          
+          <div class="method-source-code" id="trie-source">
+            <pre><span class="ruby-comment"># File lib/diccionario.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">trie</span>
+  <span class="ruby-ivar">@trie</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
