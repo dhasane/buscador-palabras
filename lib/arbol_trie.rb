@@ -7,41 +7,41 @@ require 'set'
 
 # arbolito de palabras ~
 class ArbolTrie
-  # Definicion:
-  # Un nodo es hoja de un arbol si y solo si
-  #   @hijos == {}
-  #
-  # Representacion:
-  # Cuando @hijos no es vacio, cada llave corresponde al primer caracter
-  #   de una cadena representada y su valor al resto de la cadena
-  #
-  # Un nodo es final de una cadena representada en el trie si y solo si
-  #     @relacion no es vacia (i.e !@relacion.empty? )
-  #
-  # Excepto en el trie vacio, las hojas deben tener @relacion no vacia
   def initialize
     @hijos = {}
     @relacion = Set.new
+    # Definicion:
+    # Un nodo es hoja de un arbol si y solo si
+    #   @hijos == {}
+    #
+    # Representacion:
+    # Cuando @hijos no es vacio, cada llave corresponde al primer caracter
+    #   de una cadena representada y su valor al resto de la cadena
+    #
+    # Un nodo es final de una cadena representada en el trie si y solo si
+    #     @relacion no es vacia (i.e !@relacion.empty? )
+    #
+    # Excepto en el trie vacio, las hojas deben tener @relacion no vacia
   end
 
-  # retorna el mapa de hijos
+  # Retorna el Hash de hijos
   def hijos
     @hijos
   end
 
-  # retorna el set de relaciones
+  # Retorna el Set de relaciones
   def relacion
     @relacion
   end
 
-  # verificar consistencia
+  # Verificar que un árbol esté bien formado
   def verificar_consistencia(cadena_revisada = '')
     if @hijos.empty?
       return true
     end
 
     @hijos.each do |letra, subarbol|
-      if letra.length != 1 
+      if letra.length != 1
         puts "** letra deberia ser un caracter tras #{cadena_revisada}"
         return false
       end
@@ -57,19 +57,23 @@ class ArbolTrie
     end
   end
 
-  # agrega una letra al nivel actual en caso de no existir, y a ese nodo le
+  # Agrega al trie una cadena y un elemento al conjunto asociado a la cadena
+  # Si la cadena ya existe añade el elemento al conjunto asociado
+  #
+  #
+  # Agrega una letra al nivel actual en caso de no existir, y a ese nodo le
   # envia la cadena menos la primera letra, para continuar el proceso hasta la
   # cadena estar vacia
   # Note que se pueden agregar cadenas con espacios (i.e varias palabras)
-  def agregar(cadena, elemento)
-    # si se llegó a última letra se agrea elemento
+  def agregar(cadena, relacion)
+    # si se llegó a última letra se agrega relacion
     if cadena.empty?
-      @relacion.add(elemento)
+      @relacion.add(relacion)
     else
       # se crea el nuevo nodo con la siguiente letra
       @hijos[cadena[0]] = ArbolTrie.new if @hijos[cadena[0]].nil?
       # va al siguiente nodo
-      @hijos[cadena[0]].agregar(cadena[1..-1], elemento)
+      @hijos[cadena[0]].agregar(cadena[1..-1], relacion)
     end
   end
 
@@ -87,7 +91,7 @@ class ArbolTrie
   end
 
   # esta funcion tiene en cuenta el contexto de una palabra, para
-  # poder encontrar cadenas de varias palabras que esten dentro del 
+  # poder encontrar cadenas de varias palabras que esten dentro del
   # diccionario en el texto
   # contexto es la lista de todas las palabras de un texto
   # numero palabra es la palabra que se esta buscando dentro del contexto
@@ -98,7 +102,7 @@ class ArbolTrie
        numero_palabra >= contexto.length ||
        iter > contexto[numero_palabra].length
       {}
-    elsif iter == contexto[numero_palabra].length 
+    elsif iter == contexto[numero_palabra].length
       if !@relacion.empty?
         { pal: palabra + contexto[numero_palabra], rel: @relacion.to_a }
 
