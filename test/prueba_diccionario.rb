@@ -52,7 +52,6 @@ class PruebaDiccionario < Minitest::Test
         'la palabra que se busca es palabra y adicionalmente se busca con contexto esta palabra',
         5
       )
-    assert_equal(resultado['palabra'][:palabra], 'palabra')
     assert_equal(
       resultado,
       { 'palabra' => { palabra: 'palabra',
@@ -71,6 +70,50 @@ class PruebaDiccionario < Minitest::Test
                          }
                        ],
                        relaciones: [[]] } }
+    )
+  end
+
+  # retorna true en caso de que ambos arreglos contengan los mismos elementos
+  # complejidad de O(n*m), aunque m se va reduciendo
+  def unordered_equal(arr1, arr2)
+    arr1.each do |val|
+      return false if arr2.delete(val).nil?
+    end
+    true
+  end
+
+  # retorna true en caso de que ambos arreglos contengan los mismos elementos
+  # complejidad de O(n*m), aunque m se va reduciendo
+  def unordered_diff(arr1, arr2)
+    arr1.each do |val|
+      arr2.delete(val).nil?
+    end
+    arr2
+  end
+
+  def test_contener_todas_las_palabras_guardadas
+    # sacado de:
+    # https://stackoverflow.com/questions/88311/how-to-generate-a-random-string-in-ruby
+    o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+
+    # ya que en el diccionario no se guardaran repetidos
+    palabras = Set.new
+    d = Diccionario.new
+
+    # se generan 500 palabras aleatorias de 50 caracteres cada una y
+    # se guardan en ambos un Diccionario y un Set
+    (0..500).map do
+      string = (0...50).map { o[rand(o.length)] }.join
+
+      palabras << string
+      d.agregar(string)
+    end
+
+    palabras_reconstruidas = d.reconstruir_palabras
+
+    assert(
+      unordered_equal(palabras_reconstruidas, palabras.to_a),
+      'palabras no encontradas'
     )
   end
 end

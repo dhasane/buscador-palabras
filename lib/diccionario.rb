@@ -53,7 +53,7 @@ class Diccionario
   end
 
   # imprime los nodos del arbol
-  def prt
+  def imprimir_trie
     puts 'letras entre || representan el final de una palabra'
     @trie.prt(0)
   end
