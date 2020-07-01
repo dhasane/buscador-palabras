@@ -1,23 +1,23 @@
+# coding: utf-8
 
 require_relative 'arbol_trie.rb'
 
-# Diccionario para la busqueda de palabras y su contexto.
+# Buscador para la busqueda de palabras y su contexto.
 # para la busqueda de palabras se utiliza un trie, dado
 # que este permite un rapido funcionamiento a la hora de
 # buscar dentro de este.
 # Esta clase se utiliza para el control de varias tareas
 # externas al trie, como lo es la busqueda del contexto y
 # en relacion al analisis de un texto.
-class Diccionario
+class BuscadorPalabras
   # se inicializa el trie
   def initialize
     @trie = ArbolTrie.new
   end
 
-  # Se ingresa una palabra al diccionario
+  # Se ingresa una palabra al buscador
   #
-  # Parametros
-  #
+  # Parametros:
   # el primer parametro es la palabra y el segundo parametro es una lista de
   # palabras relacionadas a la primera
   # un ejemplo de esto podria ser : ('escarabajo', ['carro','volkswagen'])
@@ -41,8 +41,9 @@ class Diccionario
     @trie
   end
 
-  # busca una palabra,
-  # Parametros
+  # busca una palabra
+  #
+  # Parametros:
   # recibe como parametro la palabra que se va a buscar
   # Retorno:
   # true en caso de encontrar la palabra, false de lo contrario

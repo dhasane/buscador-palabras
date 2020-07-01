@@ -2,22 +2,22 @@
 # coding: utf-8
 
 require 'minitest/autorun'
-require_relative '../lib/diccionario'
+require_relative '../lib/buscador-palabras'
 
-class PruebaDiccionario < Minitest::Test
-  def setup
-  end
-
+class PruebaBuscadorPalabras < Minitest::Test
   def test_vacio
-    d = Diccionario.new
-    assert_equal(d.analizar('esto es un texto', 0), {})
+    bp = BuscadorPalabras.new
+    assert_equal(
+      bp.analizar('esto es un texto', 0),
+      {}
+    )
   end
 
   def test_una_ocurrencia_sin_contexto
-    d = Diccionario.new
-    d.agregar('palabra', [])
+    bp = BuscadorPalabras.new
+    bp.agregar('palabra', [])
     assert_equal(
-      d.analizar('esto es un texto y hay una palabra que se busca', 0),
+      bp.analizar('esto es un texto y hay una palabra que se busca', 0),
       { 'palabra' =>
         {
           palabra: 'palabra',
@@ -28,10 +28,10 @@ class PruebaDiccionario < Minitest::Test
   end
 
   def test_una_ocurrencia_con_contexto
-    d = Diccionario.new
-    d.agregar('palabra', [])
+    bp = BuscadorPalabras.new
+    bp.agregar('palabra', [])
     assert_equal(
-      d.analizar('esto es un texto y hay una palabra que se busca', 5),
+      bp.analizar('esto es un texto y hay una palabra que se busca', 5),
       { 'palabra' => { palabra: 'palabra',
                        contexto: [
                          {
@@ -44,11 +44,11 @@ class PruebaDiccionario < Minitest::Test
   end
 
   def test_varias_ocurrencias_con_contexto
-    d = Diccionario.new
-    d.agregar('palabra', [])
+    bp = BuscadorPalabras.new
+    bp.agregar('palabra', [])
 
     resultado =
-      d.analizar(
+      bp.analizar(
         'la palabra que se busca es palabra y adicionalmente se busca con contexto esta palabra',
         5
       )
@@ -73,44 +73,29 @@ class PruebaDiccionario < Minitest::Test
     )
   end
 
-  # retorna true en caso de que ambos arreglos contengan los mismos elementos
-  # complejidad de O(n*m), aunque m se va reduciendo
-  def equal(arr1, arr2)
-    arr1.sort == arr2.sort
-  end
-
-  # retorna true en caso de que ambos arreglos contengan los mismos elementos
-  def diff(arr1, arr2)
-    (arr1 - arr2)
-    puts palabras_reconstruidas - palabras.to_a
-    arr2
-  end
-
   def test_contener_todas_las_palabras_guardadas
     # sacado de:
     # https://stackoverflow.com/questions/88311/how-to-generate-a-random-string-in-ruby
     o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
-    o << '-'; o << '}'; o << ']'; o << '{'; o << '['; o << ','; o << '.'
+    o << '-' << '}' << ']' << '{' << '[' << ',' << '.'
 
     # ya que en el diccionario no se guardaran repetidos
     palabras = Set.new
-    d = Diccionario.new
+    bp = BuscadorPalabras.new
 
     # se generan 500 palabras aleatorias de 50 caracteres cada una y se guardan
-    # en ambos un Diccionario y un Set
-    (0..500).each do
+    # en ambos un BuscadorPalabras y un Set
+    500.times do
       string = (0...50).map { o[rand(o.length)] }.join
 
-      # puts string
-
       palabras.add(string)
-      d.agregar(string, [])
+      bp.agregar(string, [])
     end
 
-    palabras_reconstruidas = d.reconstruir_palabras
+    palabras_reconstruidas = bp.reconstruir_palabras
 
     assert(
-      equal(palabras_reconstruidas, palabras.to_a),
+      palabras_reconstruidas.sort == palabras.to_a.sort,
       'palabras no encontradas'
     )
   end
