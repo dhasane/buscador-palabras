@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.description = 'gema que a partir de una lista de palabras y sus relaciones, permite hacer una busqueda de estas palabras dentro de un texto usando un trie'
   s.authors     = ['Daniel Hamilton-Smith Santa Cruz', 'Vladimir Támara Patiño']
   s.email       = 'D.hamiltonsmith@outlook.com'
-  s.files       = ['lib/diccionario.rb', 'lib/arbol_trie.rb']
+  s.files       = ['lib/buscador-palabras.rb', 'lib/arbol_trie.rb']
   s.homepage    = 'https://github.com/dhasane/diccionario-palabras'
   s.license     = 'MIT'
 end
