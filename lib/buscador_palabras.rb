@@ -2,7 +2,9 @@
 
 require_relative 'arbol_trie.rb'
 
-# Buscador para la busqueda de palabras y su contexto.
+require 'byebug'
+
+# buscador para la busqueda de palabras y su contexto.
 # para la busqueda de palabras se utiliza un trie, dado
 # que este permite un rapido funcionamiento a la hora de
 # buscar dentro de este.
@@ -80,6 +82,8 @@ class BuscadorPalabras
     resultado = {}
     texto.gsub(',', '').split('.').each do |contexto|
       next if contexto.nil?
+
+      # byebug if contexto.include? 'guejar'
 
       palabras = contexto.split(' ')
       palabras.each_index do |i|

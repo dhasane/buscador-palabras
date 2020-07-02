@@ -2,7 +2,7 @@
 # coding: utf-8
 
 require 'minitest/autorun'
-require_relative '../lib/buscador-palabras'
+require_relative '../lib/buscador_palabras'
 
 class PruebaBuscadorPalabras < Minitest::Test
   def test_vacio
