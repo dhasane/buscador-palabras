@@ -1,48 +1,51 @@
 # Buscador de palabras
 
-## Inicialización:  
+Busca rapidamente una serie de cadenas en un texto usando un trie.
+Cada cadena por buscar se almacena en un trie con datos asociados,
+los cuales serán retornados cuando la palabra se encuentre en el texto.
+
+## Inicialización:
 > buscador = BuscadorPalabras.new
 
-## Agregar nuevas palabras:  
-> relacion = []
-> buscador.agregar('palabra', relacion)
+## Agregar nuevas cadenas por buscar con datos asociados:
+> buscador.agregar('texto', ['escrito'])
+> buscador.agregar('buscador', ['ubicacion palabras', 'recopilación palabras'])
 
-## Buscar una palabra:  
-> buscador.buscar('palabra')
+## Analizar un texto buscando las cadenas:
+El método `analizar` recibe el texto por analizar y el entero
+`tam_contexto`, que corresponde a la cantidad de palabras de
+contexto a retornar antes y después de cada ocurrencia de cada
+cadena encontrada.
 
-## Verificar un texto:  
-tam_contexto es la cantidad de palabras que serán tomadas para el contexto de una palabra.  
-para el caso de querer verificar la aparición de las palabras incluidas en el buscador:  
+Por ejemplo con las cadenas 'texto' y 'buscador' agregadas
+como se presentó, el siguiente código:
 ~~~
-texto = 'esto es un texto, y se va a verificar en el buscador'
-buscador.agregar('texto', ['escrito'])
-buscador.agregar('buscador', ['ubicacion palabras', 'recopilacion palabras'])
+texto = 'esto es un texto, y se va a analizar en el buscador'
 tam_contexto = 5
-buscador.verificar(texto, tam_contexto )
+buscador.analizar(texto, tam_contexto )
 ~~~
-
-Esto retornará el siguiente hash (organizado para entenderlo mejor):  
+retornará este Hash --reorganizado para entenderlo mejor:
 ~~~~
-[
-    {
-        :palabra=>"texto", 
+{
+    "texto" => {
+        :palabra=>"texto",
         :contexto=>{
-            :pre=>["esto", "es", "un"], 
-            :pos=>["y", "se", "va", "a", "verificar"]
-        }, 
+            :pre=>["esto", "es", "un"],
+            :pos=>["y", "se", "va", "a", "analizar"]
+        },
         :relaciones=>[
             ["escrito"]
         ]
-    }, 
-    {
-        :palabra=>"buscador", 
+    },
+    "buscador" => {
+        :palabra=>"buscador",
         :contexto=>{
-            :pre=>["va", "a", "verificar", "en", "el"], 
+            :pre=>["va", "a", "analizar", "en", "el"],
             :pos=>[]
-        }, 
+        },
         :relaciones=>[
             ["ubicacion palabras", "recopilacion palabras"]
         ]
     }
-]
+}
 ~~~~

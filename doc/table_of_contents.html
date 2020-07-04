@@ -42,17 +42,13 @@
 
     <ul>
 
-      <li><a href="README_md.html#label-Diccionario+de+palabras">Diccionario de palabras</a>
+      <li><a href="README_md.html#label-Buscador+de+palabras">Buscador de palabras</a>
 
       <li><a href="README_md.html#label-Inicializaci-C3-B3n-3A">Inicialización:</a>
 
-      <li><a href="README_md.html#label-Agregar+nuevas+palabras-3A">Agregar nuevas palabras:</a>
+      <li><a href="README_md.html#label-Agregar+nuevas+cadenas+por+buscar+con+datos+asociados-3A">Agregar nuevas cadenas por buscar con datos asociados:</a>
 
-      <li><a href="README_md.html#label-Buscar+una+palabra-3A">Buscar una palabra:</a>
-
-      <li><a href="README_md.html#label-Verificar+un+texto-3A">Verificar un texto:</a>
-
-      <li><a href="README_md.html#label-Verificar+varios+textos-3A">Verificar varios textos:</a>
+      <li><a href="README_md.html#label-Analizar+un+texto+buscando+las+cadenas-3A">Analizar un texto buscando las cadenas:</a>
 
     </ul>
 
@@ -75,7 +71,7 @@
   </li>
 
   <li class="class">
-    <a href="Diccionario.html">Diccionario</a>
+    <a href="BuscadorPalabras.html">BuscadorPalabras</a>
 
   </li>
 
@@ -85,7 +81,7 @@
   </li>
 
   <li class="class">
-    <a href="PruebaDiccionario.html">PruebaDiccionario</a>
+    <a href="PruebaBuscadorPalabras.html">PruebaBuscadorPalabras</a>
 
   </li>
 
@@ -100,9 +96,9 @@
     <span class="container">ArbolTrie</span>
 
   <li class="method">
-    <a href="Diccionario.html#method-c-new">::new</a>
+    <a href="BuscadorPalabras.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">Diccionario</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
     <a href="ArbolTrie.html#method-i-agregar">#agregar</a>
@@ -110,14 +106,14 @@
     <span class="container">ArbolTrie</span>
 
   <li class="method">
-    <a href="Diccionario.html#method-i-agregar">#agregar</a>
+    <a href="BuscadorPalabras.html#method-i-agregar">#agregar</a>
     &mdash;
-    <span class="container">Diccionario</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
-    <a href="Diccionario.html#method-i-analizar">#analizar</a>
+    <a href="BuscadorPalabras.html#method-i-analizar">#analizar</a>
     &mdash;
-    <span class="container">Diccionario</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
     <a href="ArbolTrie.html#method-i-buscar">#buscar</a>
@@ -125,9 +121,9 @@
     <span class="container">ArbolTrie</span>
 
   <li class="method">
-    <a href="Diccionario.html#method-i-buscar">#buscar</a>
+    <a href="BuscadorPalabras.html#method-i-buscar">#buscar</a>
     &mdash;
-    <span class="container">Diccionario</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
     <a href="ArbolTrie.html#method-i-buscar_contexto">#buscar_contexto</a>
@@ -150,19 +146,14 @@
     <span class="container">ArbolTrie</span>
 
   <li class="method">
-    <a href="ArbolTrie.html#method-i-prt">#prt</a>
+    <a href="BuscadorPalabras.html#method-i-imprimir_trie">#imprimir_trie</a>
     &mdash;
-    <span class="container">ArbolTrie</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
-    <a href="Diccionario.html#method-i-prt">#prt</a>
+    <a href="BuscadorPalabras.html#method-i-reconstruir_palabras">#reconstruir_palabras</a>
     &mdash;
-    <span class="container">Diccionario</span>
-
-  <li class="method">
-    <a href="Diccionario.html#method-i-reconstruir_palabras">#reconstruir_palabras</a>
-    &mdash;
-    <span class="container">Diccionario</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
     <a href="ArbolTrie.html#method-i-reconstruir_palabras_nodo">#reconstruir_palabras_nodo</a>
@@ -180,14 +171,14 @@
     <span class="container">PruebaArbolTrie</span>
 
   <li class="method">
-    <a href="PruebaDiccionario.html#method-i-setup">#setup</a>
-    &mdash;
-    <span class="container">PruebaDiccionario</span>
-
-  <li class="method">
     <a href="PruebaArbolTrie.html#method-i-test_cadena_vacia">#test_cadena_vacia</a>
     &mdash;
     <span class="container">PruebaArbolTrie</span>
+
+  <li class="method">
+    <a href="PruebaBuscadorPalabras.html#method-i-test_contener_todas_las_palabras_guardadas">#test_contener_todas_las_palabras_guardadas</a>
+    &mdash;
+    <span class="container">PruebaBuscadorPalabras</span>
 
   <li class="method">
     <a href="PruebaArbolTrie.html#method-i-test_dos_cadenas_l1_prefijo0">#test_dos_cadenas_l1_prefijo0</a>
@@ -230,14 +221,14 @@
     <span class="container">PruebaArbolTrie</span>
 
   <li class="method">
-    <a href="PruebaDiccionario.html#method-i-test_una_ocurrencia_con_contexto">#test_una_ocurrencia_con_contexto</a>
+    <a href="PruebaBuscadorPalabras.html#method-i-test_una_ocurrencia_con_contexto">#test_una_ocurrencia_con_contexto</a>
     &mdash;
-    <span class="container">PruebaDiccionario</span>
+    <span class="container">PruebaBuscadorPalabras</span>
 
   <li class="method">
-    <a href="PruebaDiccionario.html#method-i-test_una_ocurrencia_sin_contexto">#test_una_ocurrencia_sin_contexto</a>
+    <a href="PruebaBuscadorPalabras.html#method-i-test_una_ocurrencia_sin_contexto">#test_una_ocurrencia_sin_contexto</a>
     &mdash;
-    <span class="container">PruebaDiccionario</span>
+    <span class="container">PruebaBuscadorPalabras</span>
 
   <li class="method">
     <a href="PruebaArbolTrie.html#method-i-test_vacio">#test_vacio</a>
@@ -245,19 +236,19 @@
     <span class="container">PruebaArbolTrie</span>
 
   <li class="method">
-    <a href="PruebaDiccionario.html#method-i-test_vacio">#test_vacio</a>
+    <a href="PruebaBuscadorPalabras.html#method-i-test_vacio">#test_vacio</a>
     &mdash;
-    <span class="container">PruebaDiccionario</span>
+    <span class="container">PruebaBuscadorPalabras</span>
 
   <li class="method">
-    <a href="PruebaDiccionario.html#method-i-test_varias_ocurrencias_con_contexto">#test_varias_ocurrencias_con_contexto</a>
+    <a href="PruebaBuscadorPalabras.html#method-i-test_varias_ocurrencias_con_contexto">#test_varias_ocurrencias_con_contexto</a>
     &mdash;
-    <span class="container">PruebaDiccionario</span>
+    <span class="container">PruebaBuscadorPalabras</span>
 
   <li class="method">
-    <a href="Diccionario.html#method-i-trie">#trie</a>
+    <a href="BuscadorPalabras.html#method-i-trie">#trie</a>
     &mdash;
-    <span class="container">Diccionario</span>
+    <span class="container">BuscadorPalabras</span>
 
   <li class="method">
     <a href="ArbolTrie.html#method-i-verificar_consistencia">#verificar_consistencia</a>
