@@ -89,8 +89,6 @@
     
     <li ><a href="#method-i-imp_aux">#imp_aux</a>
     
-    <li ><a href="#method-i-prt">#prt</a>
-    
     <li ><a href="#method-i-reconstruir_palabras_nodo">#reconstruir_palabras_nodo</a>
     
     <li ><a href="#method-i-relacion">#relacion</a>
@@ -110,7 +108,27 @@
 
   <section class="description">
     
-<p>arbolito de palabras ~</p>
+<p>Árbol Trie </p>
+
+<p>Es un árbol n-ario que permite almacenar varias cadenas para después buscarlas eficientemente.</p>
+
+<p>En esta implementación cada nodo es el intermedio entre las letras de las  palabras.</p>
+
+<p>Cada nodo consta de @hijos y @relaciones:</p>
+<dl class="rdoc-list note-list"><dt>@relaciones
+<dd>
+<p>son datos asociados a la cadena que terminan en el nodo.</p>
+</dd><dt>@hijos
+<dd>
+<p>es un Hash cuyas llaves son las primeras letras diferentes de las cadenas que se almacenan en el nodo. Si un hijo tiene como llave la letra &#39;A&#39; su valor será el subárbol con el resto de  letras de las cadenas que comienzan con &#39;A&#39;</p>
+</dd></dl>
+
+<p>Por ejemplo mirando sólo los Hash @hijos de cada nodo, las cadenas AMOR y ALEGRIA podrían almacenarse así:</p>
+
+<pre>{&#39;A&#39; =&gt; {&#39;L&#39; =&gt; {&#39;E&#39; =&gt; {&#39;G&#39; =&gt; {&#39;R&#39; =&gt; {&#39;I&#39; =&gt; {&#39;A&#39; =&gt; {}}}}}}},
+        {&#39;M&#39; =&gt; {&#39;O&#39; =&gt; {&#39;R&#39; =&gt; {}}}}</pre>
+
+<p>Excepto en el trie vacio, las hojas del árbol deben tener @datos no vacíos</p>
 
   </section>
 
@@ -144,27 +162,13 @@
 
         <div class="method-description">
           
-          <p>Definicion: Un nodo es hoja de un arbol si y solo si</p>
-
-<pre class="ruby"><span class="ruby-ivar">@hijos</span> <span class="ruby-operator">==</span> {}
-</pre>
-
-<p>Representacion: Cuando @hijos no es vacio, cada llave corresponde al primer caracter</p>
-
-<pre class="ruby"><span class="ruby-identifier">de</span> <span class="ruby-identifier">una</span> <span class="ruby-identifier">cadena</span> <span class="ruby-identifier">representada</span> <span class="ruby-identifier">y</span> <span class="ruby-identifier">su</span> <span class="ruby-identifier">valor</span> <span class="ruby-identifier">al</span> <span class="ruby-identifier">resto</span> <span class="ruby-identifier">de</span> <span class="ruby-identifier">la</span> <span class="ruby-identifier">cadena</span>
-</pre>
-
-<p>Un nodo es final de una cadena representada en el trie si y solo si</p>
-
-<pre>@relacion no es vacia (i.e !@relacion.empty? )</pre>
-
-<p>Excepto en el trie vacio, las hojas deben tener @relacion no vacia</p>
+          <p>Constructora del trie vacío</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 22</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
   <span class="ruby-ivar">@hijos</span> = {}
   <span class="ruby-ivar">@relacion</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>
@@ -191,7 +195,7 @@
         
         <div class="method-heading">
           <span class="method-name">agregar</span><span
-            class="method-args">(cadena, elemento)</span>
+            class="method-args">(cadena, relacion)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -200,22 +204,31 @@
 
         <div class="method-description">
           
-          <p>agrega una letra al nivel actual en caso de no existir, y a ese nodo le envia la cadena menos la primera letra, para continuar el proceso hasta la cadena estar vacia Note que se pueden agregar cadenas con espacios (i.e varias palabras)</p>
+          <p>Agrega al trie la <code>cadena</code> con los datos asociados</p>
+
+<p><code>cadena</code> es la cadena que se agrega</p>
+
+<p><code>relacion</code> son los datos asociados a la cadena por agregar</p>
+
+<p>En el nivel actual si hace falta agrega como hijo la primera letra  de <code>cadena</code>. Entra en recursión al nodo de tal hijo con el resto de <code>cadena</code> (desde la segunda letra).</p>
+
+<p>Note que se pueden agregar cadenas con espacios (i.e varias palabras)</p>
           
           
 
           
           <div class="method-source-code" id="agregar-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 64</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">agregar</span>(<span class="ruby-identifier">cadena</span>, <span class="ruby-identifier">elemento</span>)
-  <span class="ruby-comment"># si se llegó a última letra se agrea elemento</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">agregar</span>(<span class="ruby-identifier">cadena</span>, <span class="ruby-identifier">relacion</span>)
+  <span class="ruby-comment"># Si se llegó a última letra se agrega relacion</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">cadena</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">elemento</span>)
+    <span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">relacion</span>)
   <span class="ruby-keyword">else</span>
-    <span class="ruby-comment"># se crea el nuevo nodo con la siguiente letra</span>
+    <span class="ruby-comment"># Si hace falta se crea el nuevo nodo con la primera letra de cadena</span>
     <span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">cadena</span>[<span class="ruby-value">0</span>]] = <span class="ruby-constant">ArbolTrie</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">cadena</span>[<span class="ruby-value">0</span>]].<span class="ruby-identifier">nil?</span>
-    <span class="ruby-comment"># va al siguiente nodo</span>
-    <span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">cadena</span>[<span class="ruby-value">0</span>]].<span class="ruby-identifier">agregar</span>(<span class="ruby-identifier">cadena</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">elemento</span>)
+    <span class="ruby-comment"># Entra en recursión en el nodo hijo pasando la subcadena desde</span>
+    <span class="ruby-comment"># la posición 2</span>
+    <span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">cadena</span>[<span class="ruby-value">0</span>]].<span class="ruby-identifier">agregar</span>(<span class="ruby-identifier">cadena</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">relacion</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -241,16 +254,18 @@
 
         <div class="method-description">
           
-          <p>busca la primera letra de la cadena en los nodos del siguiente nivel y envia la cadena menos la primera letra a este siguiente nivel</p>
+          <p>Determina si la <code>cadena</code> dada está en el trie</p>
+
+<p>Busca la primera letra de la cadena entre los hijos del nodo actual, si la encuentra entra en recursión en ese nodo pasando la subcadena desde la segunda letra.</p>
           
           
 
           
           <div class="method-source-code" id="buscar-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 78</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">buscar</span>(<span class="ruby-identifier">cadena</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">cadena</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-comment"># es la ultima letra de esta palabra el final de una palabra?</span>
+    <span class="ruby-comment"># La última letra corresponde con el final de una cadena almacenada?</span>
     <span class="ruby-operator">!</span><span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">cadena</span>[<span class="ruby-value">0</span>]].<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">cadena</span>[<span class="ruby-value">0</span>]].<span class="ruby-identifier">buscar</span>(<span class="ruby-identifier">cadena</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>])
@@ -272,7 +287,7 @@
         
         <div class="method-heading">
           <span class="method-name">buscar_contexto</span><span
-            class="method-args">(contexto, numero_palabra, iter, palabra)</span>
+            class="method-args">(contexto, numero_palabra, iter, cadena)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -281,36 +296,46 @@
 
         <div class="method-description">
           
-          <p>esta funcion tiene en cuenta el contexto de una palabra, para poder encontrar cadenas de varias palabras que esten dentro del  diccionario en el texto contexto es la lista de todas las palabras de un texto numero palabra es la palabra que se esta buscando dentro del contexto iter es la posicion en la palabra (la letra) palabra es el resultado total que ha sido encontrado</p>
+          <p>Determina si una sublista inicial de la lista de palabras <code>contexto</code> está en el trie como una cadena</p>
+
+<p><code>contexto</code> es una lista de palabras por buscar</p>
+
+<p><code>numero_palabra</code> es el índice  de la palabra de <code>contexto</code> en la que va</p>
+
+<p><code>iter</code> es el índice dentro de <a href="numero_palabra">contexto</a> en el que va <code>cadena</code> es la cadena que ya ha sido encontrada en el trie</p>
+
+<p>Retorna {} si no encuentra sublista inicial de <code>contexto</code> en el trie o una Hash de la forma:</p>
+
+<pre class="ruby">{<span class="ruby-value">pal:</span> <span class="ruby-identifier">cadena_encontrada</span>, <span class="ruby-value">rel:</span> <span class="ruby-identifier">datos_asociados_a_la_cadena_encontrada</span>}
+</pre>
           
           
 
           
           <div class="method-source-code" id="buscar_contexto-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 96</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">buscar_contexto</span>(<span class="ruby-identifier">contexto</span>, <span class="ruby-identifier">numero_palabra</span>, <span class="ruby-identifier">iter</span>, <span class="ruby-identifier">palabra</span>)
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">buscar_contexto</span>(<span class="ruby-identifier">contexto</span>, <span class="ruby-identifier">numero_palabra</span>, <span class="ruby-identifier">iter</span>, <span class="ruby-identifier">cadena</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">contexto</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span>
      <span class="ruby-identifier">numero_palabra</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">contexto</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">||</span>
      <span class="ruby-identifier">iter</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>].<span class="ruby-identifier">length</span>
     {}
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">iter</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>].<span class="ruby-identifier">length</span> 
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">iter</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>].<span class="ruby-identifier">length</span>
     <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">empty?</span>
-      { <span class="ruby-value">pal:</span> <span class="ruby-identifier">palabra</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>], <span class="ruby-value">rel:</span> <span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">to_a</span> }
-
+      { <span class="ruby-value">pal:</span> <span class="ruby-identifier">cadena</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>], <span class="ruby-value">rel:</span> <span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">to_a</span> }
+    
     <span class="ruby-comment"># que se encuentre espacio entre los posibles hijos del nodo actual</span>
     <span class="ruby-comment"># y que haya una palabra siguiente en el contexto</span>
     <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@hijos</span>[<span class="ruby-string">&#39; &#39;</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">numero_palabra</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">contexto</span>.<span class="ruby-identifier">size</span>
       <span class="ruby-comment"># palabra actual mas la siguiente</span>
-      <span class="ruby-identifier">palabra</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39; &#39;</span>
-      <span class="ruby-ivar">@hijos</span>[<span class="ruby-string">&#39; &#39;</span>].<span class="ruby-identifier">buscar_contexto</span>(<span class="ruby-identifier">contexto</span>, <span class="ruby-identifier">numero_palabra</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-value">0</span>, <span class="ruby-identifier">palabra</span>)
-
+      <span class="ruby-identifier">cadena</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39; &#39;</span>
+      <span class="ruby-ivar">@hijos</span>[<span class="ruby-string">&#39; &#39;</span>].<span class="ruby-identifier">buscar_contexto</span>(<span class="ruby-identifier">contexto</span>, <span class="ruby-identifier">numero_palabra</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-value">0</span>, <span class="ruby-identifier">cadena</span>)
     <span class="ruby-keyword">else</span>
       {}
     <span class="ruby-keyword">end</span>
 
   <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>][<span class="ruby-identifier">iter</span>]].<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@hijos</span>[<span class="ruby-identifier">contexto</span>[<span class="ruby-identifier">numero_palabra</span>][<span class="ruby-identifier">iter</span>]]
-      .<span class="ruby-identifier">buscar_contexto</span>(<span class="ruby-identifier">contexto</span>, <span class="ruby-identifier">numero_palabra</span>, <span class="ruby-identifier">iter</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">palabra</span>)
+      .<span class="ruby-identifier">buscar_contexto</span>(<span class="ruby-identifier">contexto</span>, <span class="ruby-identifier">numero_palabra</span>, <span class="ruby-identifier">iter</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">cadena</span>)
 
   <span class="ruby-keyword">else</span>
     {}
@@ -339,13 +364,13 @@
 
         <div class="method-description">
           
-          <p>retorna el mapa de hijos</p>
+          <p>Retorna el Hash de hijos</p>
           
           
 
           
           <div class="method-source-code" id="hijos-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">hijos</span>
   <span class="ruby-ivar">@hijos</span>
 <span class="ruby-keyword">end</span></pre>
@@ -372,13 +397,13 @@
 
         <div class="method-description">
           
-          <p>imprime los nodos del arbol</p>
+          <p>Imprime el trie indentado</p>
           
           
 
           
           <div class="method-source-code" id="imp-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 144</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 167</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">imp</span>
   <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;letras entre || representan el final de una palabra&#39;</span>
   <span class="ruby-identifier">profundidad</span> = <span class="ruby-value">0</span>
@@ -386,81 +411,6 @@
     <span class="ruby-identifier">puts</span> <span class="ruby-identifier">profundidad</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;-&#39;</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;|&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;|&#39;</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">imp_aux</span>(<span class="ruby-identifier">profundidad</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-imp_aux" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">imp_aux</span><span
-            class="method-args">(profundidad)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>imprime el nodo, indentado dependiendo su profundidad, con respecto a la raiz</p>
-          
-          
-
-          
-          <div class="method-source-code" id="imp_aux-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 136</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">imp_aux</span>(<span class="ruby-identifier">profundidad</span>)
-  <span class="ruby-ivar">@hijos</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">letra</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">profundidad</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;-&#39;</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;|&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">letra</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;|&#39;</span>
-    <span class="ruby-identifier">value</span>.<span class="ruby-identifier">imp_aux</span>(<span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-prt" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">prt</span><span
-            class="method-args">(profundidad)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>imprime el nodo, indentado dependiendo su profundidad, con respecto a la raiz</p>
-          
-          
-
-          
-          <div class="method-source-code" id="prt-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 155</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prt</span>(<span class="ruby-identifier">profundidad</span>)
-  <span class="ruby-comment"># bar = @leaf ? &#39;|&#39; : &#39;&#39; # representa final de palabras</span>
-  <span class="ruby-ivar">@hijos</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">letra</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">profundidad</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;-&#39;</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span>
-         <span class="ruby-identifier">bar</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">letra</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">bar</span> <span class="ruby-operator">+</span>
-         <span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">to_s</span>
-    <span class="ruby-identifier">value</span>.<span class="ruby-identifier">prt</span>(<span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
-  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -485,13 +435,15 @@
 
         <div class="method-description">
           
-          <p>agrega el nodo a la palabra, en caso de ser hoja, se agrega a las palabras encontradas dentro del arbol</p>
+          <p>Agrega a <code>palabras</code> la lista de palabras almacenadas en el trie</p>
+
+<p><code>palabra</code> es prefijo que lleva <code>palabras</code> es lista donde se van agregando las alamacenadas en el trie</p>
           
           
 
           
           <div class="method-source-code" id="reconstruir_palabras_nodo-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 127</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 159</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">reconstruir_palabras_nodo</span>(<span class="ruby-identifier">palabra</span>, <span class="ruby-identifier">palabras</span>)
   <span class="ruby-identifier">palabras</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">palabra</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@relacion</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-ivar">@hijos</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">letra</span>, <span class="ruby-identifier">valor</span><span class="ruby-operator">|</span>
@@ -521,13 +473,13 @@
 
         <div class="method-description">
           
-          <p>retorna el set de relaciones</p>
+          <p>Retorna el Set de datos</p>
           
           
 
           
           <div class="method-source-code" id="relacion-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 33</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">relacion</span>
   <span class="ruby-ivar">@relacion</span>
 <span class="ruby-keyword">end</span></pre>
@@ -554,20 +506,22 @@
 
         <div class="method-description">
           
-          <p>verificar consistencia</p>
+          <p>Verifica que un árbol esté bien formado</p>
+
+<p><code>cadena_revisada</code> es cadena que ya se ha revisado, el nodo actual es hijo</p>
           
           
 
           
           <div class="method-source-code" id="verificar_consistencia-source">
-            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 38</span>
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">verificar_consistencia</span>(<span class="ruby-identifier">cadena_revisada</span> = <span class="ruby-string">&#39;&#39;</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@hijos</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-ivar">@hijos</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">letra</span>, <span class="ruby-identifier">subarbol</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">letra</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">!=</span> <span class="ruby-value">1</span> 
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">letra</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>
       <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;** letra deberia ser un caracter tras #{cadena_revisada}&quot;</span>
       <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
     <span class="ruby-keyword">end</span>
@@ -580,6 +534,50 @@
       <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">return</span> <span class="ruby-identifier">subarbol</span>.<span class="ruby-identifier">verificar_consistencia</span>(<span class="ruby-identifier">cadena_revisada</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">letra</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-imp_aux" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">imp_aux</span><span
+            class="method-args">(profundidad)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Imprime el trie indentado de acuerdo a la profundidad con respecto a la raiz</p>
+          
+          
+
+          
+          <div class="method-source-code" id="imp_aux-source">
+            <pre><span class="ruby-comment"># File lib/arbol_trie.rb, line 180</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">imp_aux</span>(<span class="ruby-identifier">profundidad</span>)
+  <span class="ruby-ivar">@hijos</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">letra</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">profundidad</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;-&#39;</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;|&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">letra</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;|&#39;</span>
+    <span class="ruby-identifier">value</span>.<span class="ruby-identifier">imp_aux</span>(<span class="ruby-identifier">profundidad</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

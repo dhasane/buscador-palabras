@@ -60,12 +60,10 @@
   <h3>Table of Contents</h3>
 
   <ul class="link-list" role="directory">
-    <li><a href="#label-Diccionario+de+palabras">Diccionario de palabras</a>
+    <li><a href="#label-Buscador+de+palabras">Buscador de palabras</a>
     <li><a href="#label-Inicializaci-C3-B3n-3A">Inicialización:</a>
-    <li><a href="#label-Agregar+nuevas+palabras-3A">Agregar nuevas palabras:</a>
-    <li><a href="#label-Buscar+una+palabra-3A">Buscar una palabra:</a>
-    <li><a href="#label-Verificar+un+texto-3A">Verificar un texto:</a>
-    <li><a href="#label-Verificar+varios+textos-3A">Verificar varios textos:</a>
+    <li><a href="#label-Agregar+nuevas+cadenas+por+buscar+con+datos+asociados-3A">Agregar nuevas cadenas por buscar con datos asociados:</a>
+    <li><a href="#label-Analizar+un+texto+buscando+las+cadenas-3A">Analizar un texto buscando las cadenas:</a>
   </ul>
 </div>
 
@@ -90,35 +88,27 @@
 
 <main role="main" aria-label="Page README.md">
 
-<h1 id="label-Diccionario+de+palabras"><a href="Diccionario.html"><code>Diccionario</code></a> de palabras<span><a href="#label-Diccionario+de+palabras">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Buscador+de+palabras">Buscador de palabras<span><a href="#label-Buscador+de+palabras">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Busca rapidamente una serie de cadenas en un texto usando un trie. Cada cadena por buscar se almacena en un trie con datos asociados, los cuales serán retornados cuando la palabra se encuentre en el texto.</p>
 
 <h2 id="label-Inicializaci-C3-B3n-3A">Inicialización:<span><a href="#label-Inicializaci-C3-B3n-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
 <blockquote>
-<p>dic = <a href="Diccionario.html#method-c-new"><code>Diccionario.new</code></a></p>
+<p>buscador = <a href="BuscadorPalabras.html#method-c-new"><code>BuscadorPalabras.new</code></a></p>
 </blockquote>
 
-<h2 id="label-Agregar+nuevas+palabras-3A">Agregar nuevas palabras:<span><a href="#label-Agregar+nuevas+palabras-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<h2 id="label-Agregar+nuevas+cadenas+por+buscar+con+datos+asociados-3A">Agregar nuevas cadenas por buscar con datos asociados:<span><a href="#label-Agregar+nuevas+cadenas+por+buscar+con+datos+asociados-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
 <blockquote>
-<p>relacion = [] dic.agregar(&#39;palabra&#39;, relacion)</p>
+<p>buscador.agregar(&#39;texto&#39;, [&#39;escrito&#39;]) buscador.agregar(&#39;buscador&#39;, [&#39;ubicacion palabras&#39;, &#39;recopilación palabras&#39;])</p>
 </blockquote>
 
-<h2 id="label-Buscar+una+palabra-3A">Buscar una palabra:<span><a href="#label-Buscar+una+palabra-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<h2 id="label-Analizar+un+texto+buscando+las+cadenas-3A">Analizar un texto buscando las cadenas:<span><a href="#label-Analizar+un+texto+buscando+las+cadenas-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<blockquote>
-<p>dic.buscar(&#39;palabra&#39;)</p>
-</blockquote>
+<p>El método <code>analizar</code> recibe el texto por analizar y el entero <code>tam_contexto</code>, que corresponde a la cantidad de palabras de contexto a retornar antes y después de cada ocurrencia de cada cadena encontrada.</p>
 
-<h2 id="label-Verificar+un+texto-3A">Verificar un texto:<span><a href="#label-Verificar+un+texto-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
-
-<p>tam_contexto es la cantidad de palabras que serán tomadas para el contexto de una palabra.<br> para el caso de querer verificar la aparición de las palabras incluidas en el diccionario:<br> &lt;s&gt;~ texto = &#39;esto es un texto, y se va a verificar en el diccionario&#39; dic.agregar(&#39;texto&#39;, [&#39;escrito&#39;]) dic.agregar(&#39;diccionario&#39;, [&#39;definicion de palabras&#39;, &#39;recopilacion palabras&#39;]) tam_contexto = 5 dic.verificar_texto(texto, tam_contexto ) &lt;/s&gt;~</p>
-
-<p>Esto retornará el siguiente hash (organizado para entenderlo mejor):<br> ~&lt;s&gt;~ [ { :palabra=&gt;“texto”, :contexto=&gt;{ :pre=&gt;[“esto”, “es”, “un”], :pos=&gt;[“y”, “se”, “va”, “a”, “verificar”] }, :relaciones=&gt;[ [“escrito”] ] }, { :palabra=&gt;“diccionario”, :contexto=&gt;{ :pre=&gt;[“va”, “a”, “verificar”, “en”, “el”], :pos=&gt;[] }, :relaciones=&gt;[ [“definicion de palabras”, “recopilacion palabras”] ] } ] &lt;/s&gt;~~</p>
-
-<h2 id="label-Verificar+varios+textos-3A">Verificar varios textos:<span><a href="#label-Verificar+varios+textos-3A">&para;</a> <a href="#top">&uarr;</a></span></h2>
-
-<p>También se tiene la funcion <code>verificar</code> la cual sirve para verificar una lista de textos<br> retorna una lista de hashes de la forma ~&lt;s&gt;~ [ { :relato : siendo el texto analizado :posibilidades : el mismo hash resultante de verificar_texto }, { … }, . . . ] &lt;/s&gt;~~</p>
+<p>Por ejemplo con las cadenas &#39;texto&#39; y &#39;buscador&#39; agregadas como se presentó, el siguiente código: &lt;s&gt;~ texto = &#39;esto es un texto, y se va a analizar en el buscador&#39; tam_contexto = 5 buscador.analizar(texto, tam_contexto ) &lt;/s&gt;~ retornará este Hash –reorganizado para entenderlo mejor: ~&lt;s&gt;~ {  “texto” =&gt; {  :palabra=&gt;“texto”,  :contexto=&gt;{  :pre=&gt;[“esto”, “es”, “un”],  :pos=&gt;[“y”, “se”, “va”, “a”, “analizar”]  },  :relaciones=&gt;[ [“escrito”] ]  },  “buscador” =&gt; {  :palabra=&gt;“buscador”,  :contexto=&gt;{  :pre=&gt;[“va”, “a”, “analizar”, “en”, “el”],  :pos=&gt;[]  },  :relaciones=&gt;[ [“ubicacion palabras”, “recopilacion palabras”] ]  } } &lt;/s&gt;~~</p>
 
 </main>
 
