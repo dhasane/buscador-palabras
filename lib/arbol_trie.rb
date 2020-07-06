@@ -103,16 +103,15 @@ class ArbolTrie
        iter > contexto[numero_palabra].length
       {}
     elsif iter == contexto[numero_palabra].length
-      if !@relacion.empty?
+      if !@hijos[' '].nil? && numero_palabra + 1 < contexto.size
+        # palabra actual mas la siguiente
+        palabra += contexto[numero_palabra] + ' '
+        @hijos[' '].buscar_contexto(contexto, numero_palabra + 1, 0, palabra)
+      elsif !@relacion.empty?
         { pal: palabra + contexto[numero_palabra], rel: @relacion.to_a }
 
       # que se encuentre espacio entre los posibles hijos del nodo actual
       # y que haya una palabra siguiente en el contexto
-      elsif !@hijos[' '].nil? && numero_palabra + 1 < contexto.size
-        # palabra actual mas la siguiente
-        palabra += contexto[numero_palabra] + ' '
-        @hijos[' '].buscar_contexto(contexto, numero_palabra + 1, 0, palabra)
-
       else
         {}
       end
